@@ -40,8 +40,7 @@
             var labels = File.ReadAllLines(TensorFlowLabelsFilePath);
             graph.Import(model);
 
-            var bestIdx = 0;
-            float best = 0;
+            Console.WriteLine($"{TestImageFilePath}");
 
             using (var session = new TFSession(graph))
             {
@@ -50,21 +49,21 @@
                 runner.AddInput(graph["Placeholder"][0], tensor).Fetch(graph["loss"][0]);
                 var output = runner.Run();
                 var result = output[0];
+                var threshold = 0.05; // 5%
 
                 var probabilities = ((float[][])result.GetValue(jagged: true))[0];
                 for (int i = 0; i < probabilities.Length; i++)
                 {
-                    if (probabilities[i] > best)
+                    // output the tags over the threshold
+                    if (probabilities[i] > threshold)
                     {
-                        bestIdx = i;
-                        best = probabilities[i];
+                       Console.WriteLine("{0} ({1}%)", labels[i],Math.Round(probabilities[i] * 100.0,2).ToString());
                     }
                 }
             }
 
             // fin
             stopwatch.Stop();
-            Console.WriteLine($"{TestImageFilePath} = {labels[bestIdx]} ({best * 100.0}%)");
             Console.WriteLine($"Total time: {stopwatch.Elapsed}");
             Console.ReadKey();
         }
