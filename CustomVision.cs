@@ -46,7 +46,8 @@
             {
                 var tensor = ImageUtil.CreateTensorFromImageFile(TestImageFilePath);
                 var runner = session.GetRunner();
-                runner.AddInput(graph["Placeholder"][0], tensor).Fetch(graph["loss"][0]);
+                //runner.AddInput(graph["Placeholder"][0], tensor).Fetch(graph["loss"][0]);
+                runner.AddInput(graph["input"][0], tensor).Fetch(graph["final_result"][0]);
                 var output = runner.Run();
                 var result = output[0];
                 var threshold = 0.05; // 5%

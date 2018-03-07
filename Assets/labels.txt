@@ -1,13 +1,2 @@
-axe
-boots
-carabiner
-crampon
-gloves
-hardshell
-harness
-helmet
-insulated
-jacket
-pully
-rope
-tent
+benign
+malignant
